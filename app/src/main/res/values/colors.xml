@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="light_blue">#9AC5F3</color>
+    <color name="blue">#539CEB</color>
+    <color name="cal_green">#19E652</color>
+    <color name="cal_yellow">#E3931D</color>
+    <color name="cal_red">#EA2013</color>
+    <color name="cal_purple">#910CB5</color>
+    <color name="cal_magenta">#DC136C</color>
+</resources>

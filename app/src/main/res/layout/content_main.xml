@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/tableImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#00FFFFFF"
+        android:backgroundTintMode="add"
+        android:foregroundTint="#00FFFFFF"
+        android:tint="@color/light_blue"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/tablebkg" />
+
+    <ImageButton
+        android:id="@+id/calButtonRight"
+        android:layout_width="40dp"
+        android:layout_height="100dp"
+        android:background="#00FFFFFF"
+        android:keyboardNavigationCluster="false"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:tint="@color/light_blue"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tableImg"
+        app:layout_constraintTop_toTopOf="@+id/tableImg"
+        app:srcCompat="@drawable/arrowleft" />
+
+    <ImageButton
+        android:id="@+id/calButtonLeft"
+        android:layout_width="40dp"
+        android:layout_height="100dp"
+        android:background="#00FFFFFF"
+        android:scaleX="-1.5"
+        android:scaleY="1.5"
+        android:tint="@color/light_blue"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tableImg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tableImg"
+        app:srcCompat="@drawable/arrowleft" />
+
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/tableImg"
+        app:layout_constraintEnd_toEndOf="@+id/tableImg"
+        app:layout_constraintStart_toStartOf="@+id/tableImg"
+        app:layout_constraintTop_toTopOf="@+id/tableImg">
+
+        <TableRow
+            android:id="@+id/fkAndroidParent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_weight="1"
+            android:paddingStart="0dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="0dp">
+
+            <RelativeLayout
+                android:id="@+id/monLayout"
+                android:layout_width="37dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0"
+                android:background="#00FFFFFF"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"/>
+
+            <RelativeLayout
+                android:id="@+id/tueLayout"
+                android:layout_width="37dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0"></RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/wedLayout"
+                android:layout_width="37dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0" />
+
+            <RelativeLayout
+                android:id="@+id/thuLayout"
+                android:layout_width="37dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0" />
+
+            <RelativeLayout
+                android:id="@+id/friLayout"
+                android:layout_width="37dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0"></RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/satLayout"
+                android:layout_width="37dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0"></RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sunLayout"
+                android:layout_width="37dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0"></RelativeLayout>
+        </TableRow>
+    </TableLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="260dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateView"
+        app:srcCompat="@drawable/weekdays" />
+
+    <TextView
+        android:id="@+id/dateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#00FFFFFF"
+        android:fontFamily="@font/orienta"
+        android:textColor="@color/light_blue"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yearView" />
+
+    <TextView
+        android:id="@+id/yearView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/orienta"
+        android:textColor="@color/light_blue"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/botNightImg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scaleX="1.05"
+        app:layout_constraintBottom_toBottomOf="@+id/tableImg"
+        app:layout_constraintEnd_toEndOf="@+id/tableImg"
+        app:layout_constraintStart_toStartOf="@+id/tableImg"
+        app:srcCompat="@drawable/nighteffectdn" />
+
+    <ImageView
+        android:id="@+id/botNightImg2"
+        android:layout_width="283dp"
+        android:layout_height="wrap_content"
+        android:scaleX="1.05"
+        android:scaleY="-1"
+        app:layout_constraintEnd_toEndOf="@+id/tableImg"
+        app:layout_constraintStart_toStartOf="@+id/tableImg"
+        app:layout_constraintTop_toTopOf="@+id/tableImg"
+        app:srcCompat="@drawable/nighteffectdn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">JoinedCalendar</string>
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
+
+    <string name="WeekColumn1">monLayout</string>
+    <string name="WeekColumn2">tueLayout</string>
+    <string name="WeekColumn3">wedLayout</string>
+    <string name="WeekColumn4">thuLayout</string>
+    <string name="WeekColumn5">friLayout</string>
+    <string name="WeekColumn6">satLayout</string>
+    <string name="WeekColumn7">sunLayout</string>
+</resources>
