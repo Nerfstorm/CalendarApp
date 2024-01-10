@@ -5,18 +5,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
-import biweekly.Biweekly;
 import biweekly.ICalendar;
 import biweekly.component.VEvent;
-import biweekly.property.DateEnd;
-import biweekly.property.DateStart;
 import biweekly.property.RecurrenceProperty;
 import biweekly.util.ICalDate;
 
@@ -27,10 +21,6 @@ public class CalendarDataManager {
     public  CalendarDataManager(Context recvContext){
         this.context = recvContext;
         displayCalendarViews = new DisplayCalendarViews(recvContext);
-    }
-    public static File getInternalStorageDir(Context context) {
-        // Get the internal storage directory for the app
-        return context.getFilesDir();
     }
 
     public void processAndPrintEventsForSpecificDate(ICalendar iCal, Date specificDate,int colorIndex) {
@@ -65,10 +55,7 @@ public class CalendarDataManager {
                 Date eventEndDate;
                 if (durationInMillis != 0) {
                     eventEndDate = new Date(eventStartDate.getTime() + durationInMillis);
-                } else {
-                    eventEndDate = null;
-                }
-                //Log.i("aaaa",eventEndDate.toString());
+                } else eventEndDate = null;
                 return new EventTimeRange(eventStartDate, eventEndDate);
             }
         } else {
@@ -93,16 +80,16 @@ public class CalendarDataManager {
         return null;
     }
 
-    private static Object[] CreateViewParameters(Date recvStartTime, Date recvEndTime){
+    private static Object[] CreateViewParameters(Date receivedStartTime, Date receivedEndTime){
         Object[] retObjects = new Object[3];
-        long startTime = recvStartTime.getTime();
-        long endTime = recvEndTime.getTime();
+        long startTime = receivedStartTime.getTime();
+        long endTime = receivedEndTime.getTime();
         long timeRange = endTime - startTime;
         retObjects[0] = (float) timeRange/millsInDay;
         Log.i("dataManger", String.valueOf(retObjects[0]));
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(recvStartTime);
+        calendar.setTime(receivedStartTime);
         int dayOfWeek = (int) calendar.get(Calendar.DAY_OF_WEEK);
         retObjects[2] = (dayOfWeek + 5) % 7 + 1;
         Log.i("dataManger", String.valueOf(retObjects[2]));

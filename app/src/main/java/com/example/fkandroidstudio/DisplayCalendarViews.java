@@ -1,16 +1,12 @@
 package com.example.fkandroidstudio;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import androidx.core.content.ContextCompat;
-
-import java.util.Date;
 
 public class DisplayCalendarViews extends RelativeLayout {
     int[] idArray;
@@ -26,14 +22,14 @@ public class DisplayCalendarViews extends RelativeLayout {
 
     public void createCustomView(Object weekDay, Object timeRangeDiv, Object endTimeDiv,int colorIndex) {
 
-        float recvTimeRange = 0f,recvEndTime = 0f;
+        float rTimeRange = 0f,rEndTime = 0f;
         try {
-            recvTimeRange = ((Number) timeRangeDiv).floatValue();
+            rTimeRange = ((Number) timeRangeDiv).floatValue();
         } catch (ClassCastException e) {
             System.out.println("Error DisplayCalendarViews: timeRangeDiv does not contain numeric value");
         }
         try {
-            recvEndTime = ((Number) endTimeDiv).floatValue();
+            rEndTime = ((Number) endTimeDiv).floatValue();
         } catch (ClassCastException e) {
             System.out.println("Error DisplayCalendarViews: endTimeDiv does not contain numeric value");
         }
@@ -50,18 +46,18 @@ public class DisplayCalendarViews extends RelativeLayout {
 
         // Null check for the target layout
         if (targetLayout != null) {
-            float finalRecvEndTime = recvEndTime;
-            float finalRecvTimeRange = recvTimeRange;
+            float finalReceivedEndTime = rEndTime;
+            float finalReceivedTimeRange = rTimeRange;
             targetLayout.post(() -> {
 
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.bottomMargin = (int) (finalRecvEndTime * MainActivity.weekLayoutHeight);
-                layoutParams.height = (int) (finalRecvTimeRange * MainActivity.weekLayoutHeight);
+                layoutParams.bottomMargin = (int) (finalReceivedEndTime * MainActivity.weekLayoutHeight);
+                layoutParams.height = (int) (finalReceivedTimeRange * MainActivity.weekLayoutHeight);
                 layoutParams.topMargin = 0;
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-                Log.i("displayev",Integer.toString(layoutParams.bottomMargin));
+                Log.i("displayEvents",Integer.toString(layoutParams.bottomMargin));
 
                 customView.setLayoutParams(layoutParams);
                 targetLayout.addView(customView);

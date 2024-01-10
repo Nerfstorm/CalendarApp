@@ -15,7 +15,7 @@ import biweekly.ICalendar;
 public class DisplayWeekCalendar {
     Context context;
     File[] icsFiles;
-    ICalendar[] iCalenars;
+    ICalendar[] iCalendars;
     CalendarDataManager calendarDataManager;
     public DisplayWeekCalendar(Context recvContext){
         this.context = recvContext;
@@ -23,23 +23,22 @@ public class DisplayWeekCalendar {
 
         this.icsFiles = MainActivity.InternalStorageDir.listFiles((dir, name) -> name.endsWith(".ics"));
         assert icsFiles != null;
-        this.iCalenars = new ICalendar[icsFiles.length];
+        this.iCalendars = new ICalendar[icsFiles.length];
         parseCalendars(icsFiles);
     }
     private void parseCalendars(File[] icsFiles){
         int i=0;
         if(icsFiles!=null){
             for(File icsFile:icsFiles) {
-                iCalenars[i] = parseICalendar(icsFile);
+                iCalendars[i] = parseICalendar(icsFile);
                 i++;
             }
         }
     }
     public void displayWeekEvents(Date recvDate) {
-        //Date auxDate = recvDate;
         int i=0;
-        if (iCalenars != null) {
-            for (ICalendar iCal : iCalenars) {
+        if (iCalendars != null) {
+            for (ICalendar iCal : iCalendars) {
                 Log.i("events-displayWeekEvents","File: " + icsFiles[i].getAbsolutePath());
                 calendarDataManager.processAndPrintEventsForSpecificDate(iCal,recvDate,i);
                 i++;
