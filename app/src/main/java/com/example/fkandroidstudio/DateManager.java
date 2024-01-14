@@ -12,15 +12,11 @@ import java.util.Date;
 public class DateManager {
 
     Context context;
-    CalendarDatabase calendarManager;
 
     DisplayWeekCalendar displayWeekCalendar;
     public  DateManager(Context recvContext){
         this.context = recvContext;
         this.displayWeekCalendar = new DisplayWeekCalendar(context);
-    }
-    public void ConnectionToCalendarDB(){
-        this.calendarManager = Room.databaseBuilder(this.context,CalendarDatabase.class, "database-name").build();
     }
     @NonNull
     public static Calendar GetCalendar() {

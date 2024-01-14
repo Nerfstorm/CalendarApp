@@ -13,6 +13,8 @@ import biweekly.ICalendar;
 import biweekly.component.VEvent;
 import biweekly.property.RecurrenceProperty;
 import biweekly.util.ICalDate;
+import biweekly.util.com.google.ical.compat.javautil.DateIterator;
+import biweekly.util.com.google.ical.values.DateValue;
 
 public class CalendarDataManager {
     private static final int millsInDay = 86400000, threeHrsInMills= 10800000;
@@ -60,8 +62,8 @@ public class CalendarDataManager {
             }
         } else {
             // Recurring event, use iterator
-            Iterator<Date> eventIterator = rrule.getDateIterator(new ICalDate(event.getDateStart().getValue()), MainActivity.timeZone);
-
+            DateIterator eventIterator = rrule.getDateIterator(new ICalDate(event.getDateStart().getValue()), MainActivity.timeZone);
+            //eventIterator.advanceTo(weekStart);
             while (eventIterator.hasNext()) {
                 Date eventStartDate = eventIterator.next();
                 Date eventEndDate;

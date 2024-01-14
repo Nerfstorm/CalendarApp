@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -36,8 +38,8 @@ import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
     public static int weekLayoutHeight;
+    private static final int PICK_FILE_REQUEST_CODE = 200;
 
-    // Create an instance of the contract
     ActivityResultLauncher<Intent> mGetContent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -63,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
                             while ((length = Objects.requireNonNull(inputStream).read(buffer)) > 0) {
                                 outputStream.write(buffer, 0, length);
                             }
+                            AddFile addFile = new AddFile(file,Room.databaseBuilder(this,CalendarDatabase.class,"calendarTableRow").build());
+                            Thread thread = new Thread(addFile);
+                            thread.start();
+
                             outputStream.close();
                             inputStream.close();
                         } catch (IOException e) {
@@ -79,11 +85,7 @@ public class MainActivity extends AppCompatActivity {
     public static TimeZone timeZone;
     public static Calendar calendar;
     public static File InternalStorageDir;
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)) return true;
-        return super.onOptionsItemSelected(item);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         timeZone = TimeZone.getTimeZone(TimeZone.getDefault().getID());
         calendar = DateManager.GetCalendar();
         InternalStorageDir = getFilesDir();
+
         DateManager dateManager = new DateManager(this);
 
         setContentView(R.layout.activity_main);
@@ -121,9 +124,15 @@ public class MainActivity extends AppCompatActivity {
                 // Filter to show only .ics files
                 intent.setType("text/calendar");
                 mGetContent.launch(intent);
+
                 //listFilesInInternalStorage();
             } else if (item.getItemId() == R.id.settings) {
                 Toast.makeText(MainActivity.this, "Settings Selected", Toast.LENGTH_SHORT).show();
+                //for debugging
+                DisplayTable displayTable = new DisplayTable(this, 0);
+                Thread thread = new Thread(displayTable);
+                thread.start();
+
             } else if (item.getItemId() == R.id.deleteViewButton){
                 DeleteFiles();
                 restartActivity();
@@ -158,6 +167,28 @@ public class MainActivity extends AppCompatActivity {
             RemoveAllViews();
             dateManager.SkipTime(textViewCurrentWeek,textViewCurrentYear,false);
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(actionBarDrawerToggle.onOptionsItemSelected(item)) return true;
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_FILE_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Get the selected file URI
+            Uri fileUri = data.getData();
+
+            // Call your function to process the selected file
+            File icsFile = uriToFile(fileUri);
+            //calendarDbMgr.AddFileToDatabase(icsFile);
+
+        }
     }
 
     @Override
@@ -210,6 +241,24 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    private File uriToFile(Uri uri) {
+        String filePath = null;
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            filePath = cursor.getString(column_index);
+            cursor.close();
+        }
+
+        if (filePath != null) {
+            return new File(filePath);
+        } else {
+            return null;
+        }
+    }
     // Handle permission request result
 
     // Delete files from the specified directory
@@ -217,6 +266,10 @@ public class MainActivity extends AppCompatActivity {
         String directoryPath = InternalStorageDir.toString();
 
         File directory = new File(directoryPath);
+
+        DisplayTable displayTable = new DisplayTable(this, 99);
+        Thread thread = new Thread(displayTable);
+        thread.start();
 
         if (directory.exists()) {
             File[] files = directory.listFiles();
