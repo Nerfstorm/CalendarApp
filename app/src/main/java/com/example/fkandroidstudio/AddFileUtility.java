@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Objects;
 
 import biweekly.Biweekly;
@@ -17,9 +18,10 @@ public class AddFileUtility {
     public static void AddFileToDatabase(File file , CalendarDatabase calendarDatabase) {
         ICalendar ical= AddFileUtility.ParseFileToICalendar(file);
         CalendarDao calendarDao = calendarDatabase.calendarDao();
+        String fileName = file.getName();
 
         for (VEvent event : Objects.requireNonNull(ical).getEvents()){
-            processEvent(event , calendarDao);
+            processEvent(event, calendarDao, fileName);
         }
     }
 
@@ -32,12 +34,13 @@ public class AddFileUtility {
         }
     }
 
-    private static void processEvent(@NonNull VEvent event, CalendarDao calendarDao){
+    private static void processEvent(@NonNull VEvent event, CalendarDao calendarDao, String fileName){
         CalendarTableRow newRow = new CalendarTableRow();
         Log.i("Database", "event: " + event);
-        //Log.i("Database","reccRule: " + event.getRecurrenceRule().getValue().toString());
-        newRow.summary = event.getSummary().getValue();
-        Log.i("Database","Inserting summary: "+newRow.summary);
+        newRow.fileName = fileName;
+        //newRow.event = (Serializable) event;
+        newRow.event = event.toString();//Biweekly.write(vEvent).go()
+        //Log.i("Database","Inserting "+ newRow.id + " , " + newRow.fileName + " , " + newRow.event);
         calendarDao.insert(newRow);
     }
 }

@@ -12,9 +12,9 @@ public class AddFile implements Runnable{
     File file;
     CalendarDatabase calendarDatabase;
 
-    public AddFile(File rFile, CalendarDatabase rCalendarDatabase){
+    public AddFile(File rFile, Context rContext){
         this.file = rFile;
-        this.calendarDatabase = rCalendarDatabase;
+        this.calendarDatabase = Room.databaseBuilder(rContext,CalendarDatabase.class,"calendarTableRow").fallbackToDestructiveMigration().build();
     }
     public void run(){
         AddFileUtility.AddFileToDatabase(file,calendarDatabase);

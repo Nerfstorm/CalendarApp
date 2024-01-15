@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                             while ((length = Objects.requireNonNull(inputStream).read(buffer)) > 0) {
                                 outputStream.write(buffer, 0, length);
                             }
-                            AddFile addFile = new AddFile(file,Room.databaseBuilder(this,CalendarDatabase.class,"calendarTableRow").build());
+                            AddFile addFile = new AddFile(file,this);
                             Thread thread = new Thread(addFile);
                             thread.start();
 
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     public static Calendar calendar;
     public static File InternalStorageDir;
 
+    public static CalendarManager calendarManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         InternalStorageDir = getFilesDir();
 
         DateManager dateManager = new DateManager(this);
+        calendarManager = new CalendarManager(this);
 
         setContentView(R.layout.activity_main);
 
@@ -129,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.settings) {
                 Toast.makeText(MainActivity.this, "Settings Selected", Toast.LENGTH_SHORT).show();
                 //for debugging
-                DisplayTable displayTable = new DisplayTable(this, 0);
-                Thread thread = new Thread(displayTable);
+                TableQueries tableQueries = new TableQueries(this, 0);
+                Thread thread = new Thread(tableQueries);
                 thread.start();
 
             } else if (item.getItemId() == R.id.deleteViewButton){
@@ -267,8 +269,8 @@ public class MainActivity extends AppCompatActivity {
 
         File directory = new File(directoryPath);
 
-        DisplayTable displayTable = new DisplayTable(this, 99);
-        Thread thread = new Thread(displayTable);
+        TableQueries tableQueries = new TableQueries(this, 99);
+        Thread thread = new Thread(tableQueries);
         thread.start();
 
         if (directory.exists()) {
@@ -276,13 +278,11 @@ public class MainActivity extends AppCompatActivity {
 
             if (files != null) {
                 for (File file : files) if(!file.delete()) Log.e("files","Files have not been deleted");
-
                 Toast.makeText(this, "Files deleted successfully.", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "No files to delete.", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "Directory does not exist.", Toast.LENGTH_SHORT).show();
-        }
+
+            } else Toast.makeText(this, "No files to delete.", Toast.LENGTH_SHORT).show();
+
+        } else Toast.makeText(this, "Directory does not exist.", Toast.LENGTH_SHORT).show();
+
     }
 }

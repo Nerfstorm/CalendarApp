@@ -18,7 +18,7 @@ public class DateManager {
         this.context = recvContext;
         this.displayWeekCalendar = new DisplayWeekCalendar(context);
     }
-    @NonNull
+    @NonNull //moved
     public static Calendar GetCalendar() {
 
         Calendar calendar = Calendar.getInstance();

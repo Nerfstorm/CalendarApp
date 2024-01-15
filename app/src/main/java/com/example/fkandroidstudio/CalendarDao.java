@@ -8,10 +8,18 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import biweekly.component.VEvent;
+
 @Dao
 public interface CalendarDao {
     @Query("SELECT * FROM CalendarTableRow")
     List<CalendarTableRow> getAll();
+
+    @Query("SELECT DISTINCT fileName FROM CalendarTableRow")
+    List<String> DistinctFileNames();
+
+    @Query("SELECT event FROM CalendarTableRow WHERE fileName = :specFileName")
+    List<String> getEventsFromSpecFile(String specFileName);
     @Query("DELETE FROM sqlite_sequence WHERE name = 'calendarTableRow'")
     void resetPrimaryKey();
 
