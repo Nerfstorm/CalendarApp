@@ -2,9 +2,14 @@ package com.example.fkandroidstudio;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import biweekly.Biweekly;
 import biweekly.ICalendar;
@@ -16,7 +21,8 @@ public class TableQueriesUtility {
     public static void ShowTable(CalendarDao calendarDao){
         List <CalendarTableRow> rows = calendarDao.getAll();
         for (CalendarTableRow row : rows) {
-            Log.d("Database","Row: " + row.id + " , " + row.fileName + " , " + row.event);
+            //Log.d("TableQueriesUtility","Row: " + row.fileName+" "+ row.id+" " +row.summary+" "+row.dateStart+" "+row.dateEnd+" "+row.recRule+" "+row.uID+" ");
+            Log.d("TableQueriesUtilityShow","Row: " + row.id+" "+ row.fileName+" " +row.event);
         }
     }
 
@@ -25,20 +31,27 @@ public class TableQueriesUtility {
         List<String> fileNames = calendarDao.DistinctFileNames();
         for (int i = 0; i < fileNames.size(); i++) { //going in circles: string list -> Icalendar -> vEventList
             List<String> fuckBiweeklyEventListString = calendarDao.getEventsFromSpecFile(fileNames.get(i));
-            List<VEvent> fuckThisShit = null;
-            for(int j=0; j<fuckBiweeklyEventListString.size(); j++){
-                ICalendar parsedMyAss = Biweekly.parse(fuckBiweeklyEventListString.get(j)).first();
-                fuckThisShit.add(parsedMyAss.getEvents().get(0));
+            Log.d("TableQueriesUtility", "vghv"+ fuckBiweeklyEventListString.toString());
+            if(fuckBiweeklyEventListString.size()>0){
+                List<VEvent> fuckThisShit = new ArrayList<VEvent>(){};
+                for(int j=0; j<fuckBiweeklyEventListString.size(); j++){
+                    String fuckingEvent = fuckBiweeklyEventListString.get(j);
+                    Log.d("TableQueriesUtility", "vghv"+ fuckingEvent);
+                    ICalendar parsedMyAss = Biweekly.parse(fuckingEvent).first();
+                    if(parsedMyAss != null){
+                        Log.d("TableQueriesUtility", "parsed:"+ parsedMyAss.toString());
+                        fuckThisShit.add(parsedMyAss.getEvents().get(0));
+                    }
+
+                }
+                newMap.put(fileNames.get(i), fuckThisShit);
             }
-            newMap.put(fileNames.get(i), fuckThisShit);
+
         }
 
-        /*ICalendar parsedICalendar = Biweekly.parse(vEventString).first();
-
-        // Get the VEvent from the parsed ICalendar
-        VEvent parsedVEvent = parsedICalendar.getEvents().get(0);*/
         MainActivity.calendarManager.calendarMap = newMap;
     }
+
 
     public static void DeleteTable(CalendarDao calendarDao){
         calendarDao.deleteAllRows();

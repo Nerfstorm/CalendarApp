@@ -1,28 +1,32 @@
 package com.example.fkandroidstudio;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import biweekly.ICalendar;
 import biweekly.component.VEvent;
 
 public class CalendarManager {
+    public Map<String, List<VEvent>> calendarMap;
+    public Context context;
 
-    //CalendarDatabase calendarDatabase;
-//    TableQueries tableQueries = new TableQueries(this, 99);
-//    Thread thread = new Thread(tableQueries);
-//        thread.start();
-    Map<String, List<VEvent>> calendarMap;
-    Context context;
+    public DisplayCalendarViews displayCalendarViews;
+    public CalendarManagerDisplay calendarManagerDisplay;
 
-    CalendarManager(Context rContext){
+    public CalendarManager(Context rContext){
         this.context = rContext;
-        this.calendarMap = null;
-
+        this.calendarMap = new HashMap<>();
+        this.calendarManagerDisplay = new CalendarManagerDisplay();
+        this.displayCalendarViews = new DisplayCalendarViews(context);
+    }
+    public void Initialize(){
         TableQueries tableQueries = new TableQueries(context, 1);
         Thread thread = new Thread(tableQueries);
         thread.start();
@@ -30,16 +34,30 @@ public class CalendarManager {
         try {thread.join();
         }catch (InterruptedException e) {e.printStackTrace();
         }
-
-        //You have the map, continue to CalendarDataManager
+        //for debugging:
+        Log.d("CalendarManager","Debugging");
+        for (Map.Entry<String, List<VEvent>> entry : calendarMap.entrySet()) {
+            Log.d("Database",entry.getKey() + ": " + entry.getValue());
+        }
     }
 
-    public static void SkipTime(TextView textViewCurrentWeek, TextView textViewCurrentYear, boolean future){
+    public void IterateMapForSpecWeek(Date rDate){
+        int i = 0;
+        for (Map.Entry<String, List<VEvent>> entry : calendarMap.entrySet()) {
+            for (VEvent item : entry.getValue()) {
+                calendarManagerDisplay.processAndPrintEventsForSpecificDate(item, rDate, i);
+            }
+            i++;
+        }
+    }
+
+    public void SkipTime(TextView textViewCurrentWeek, TextView textViewCurrentYear, boolean future){
         if(future) MainActivity.calendar.add(Calendar.DATE, 7);
         else MainActivity.calendar.add(Calendar.DATE, -7);
         Date currentDate = MainActivity.calendar.getTime();
+        IterateMapForSpecWeek(currentDate);
 
-        textViewCurrentWeek.setText(DateShow.displayWeek(MainActivity.calendar));
-        textViewCurrentYear.setText(DateShow.displayYear(MainActivity.calendar));
+        textViewCurrentWeek.setText(CalendarManagerUtility.DisplayWeek(MainActivity.calendar));
+        textViewCurrentYear.setText(CalendarManagerUtility.DisplayYear(MainActivity.calendar));
     }
 }

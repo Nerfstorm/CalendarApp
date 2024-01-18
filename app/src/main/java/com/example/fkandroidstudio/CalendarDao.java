@@ -18,8 +18,9 @@ public interface CalendarDao {
     @Query("SELECT DISTINCT fileName FROM CalendarTableRow")
     List<String> DistinctFileNames();
 
-    @Query("SELECT event FROM CalendarTableRow WHERE fileName = :specFileName")
+    @Query("SELECT event FROM calendarTableRow WHERE fileName = :specFileName")
     List<String> getEventsFromSpecFile(String specFileName);
+
     @Query("DELETE FROM sqlite_sequence WHERE name = 'calendarTableRow'")
     void resetPrimaryKey();
 

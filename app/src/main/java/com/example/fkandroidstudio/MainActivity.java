@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static int weekLayoutHeight;
     private static final int PICK_FILE_REQUEST_CODE = 200;
 
+
     ActivityResultLauncher<Intent> mGetContent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -66,14 +67,17 @@ public class MainActivity extends AppCompatActivity {
                                 outputStream.write(buffer, 0, length);
                             }
                             AddFile addFile = new AddFile(file,this);
-                            Thread thread = new Thread(addFile);
-                            thread.start();
+                            Thread addFileThread = new Thread(addFile);
+                            addFileThread.start();
 
                             outputStream.close();
                             inputStream.close();
+                            addFileThread.join();
                         } catch (IOException e) {
                             e.printStackTrace();
                             // Handle error
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
                         }
                     }
                 }
@@ -93,11 +97,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         timeZone = TimeZone.getTimeZone(TimeZone.getDefault().getID());
-        calendar = DateManager.GetCalendar();
+        calendar = CalendarManagerUtility.GetCalendar();
         InternalStorageDir = getFilesDir();
 
-        DateManager dateManager = new DateManager(this);
+        // DateManager dateManager = new DateManager(this);
+
         calendarManager = new CalendarManager(this);
+        calendarManager.Initialize();
 
         setContentView(R.layout.activity_main);
 
@@ -152,22 +158,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Log.i("evMain", "Before calling variables");
-        //!!!
-        dateManager.displayWeekCalendar.displayWeekEvents(calendar.getTime());
-        //!!!
-        Log.i("evMain", "week events have been displayed");
-        textViewCurrentWeek.setText(DateShow.displayWeek(calendar));
-        textViewCurrentYear.setText(DateShow.displayYear(calendar));
-        Log.i("evMain", "date variables have been assigned");
+        calendarManager.IterateMapForSpecWeek(calendar.getTime());
+
+        textViewCurrentWeek.setText(CalendarManagerUtility.DisplayWeek(calendar));
+        textViewCurrentYear.setText(CalendarManagerUtility.DisplayYear(calendar));
 
         buttonCalRight.setOnClickListener(v -> {
             RemoveAllViews();
-            dateManager.SkipTime(textViewCurrentWeek,textViewCurrentYear,true);
+            calendarManager.SkipTime(textViewCurrentWeek,textViewCurrentYear,true);
         });
         buttonCalLeft.setOnClickListener(v -> {
             RemoveAllViews();
-            dateManager.SkipTime(textViewCurrentWeek,textViewCurrentYear,false);
+            calendarManager.SkipTime(textViewCurrentWeek,textViewCurrentYear,false);
         });
     }
 
@@ -183,9 +185,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_FILE_REQUEST_CODE && resultCode == RESULT_OK) {
-            // Get the selected file URI
             Uri fileUri = data.getData();
-
+            Log.d("main", "Activity Result used");
             // Call your function to process the selected file
             File icsFile = uriToFile(fileUri);
             //calendarDbMgr.AddFileToDatabase(icsFile);

@@ -27,7 +27,7 @@ public class TableQueries implements Runnable {
                 TableQueriesUtility.ShowTable(calendarDao); // show table
                 break;
             case 1:
-                TableQueriesUtility.CreateMap(calendarDao); // create map for CalendarManager
+                TableQueriesUtility.CreateMap(calendarDao); // create map for CalendarManager //jeg
                 break;
             case 99:
                 TableQueriesUtility.DeleteTable(calendarDao); // delete entire table
